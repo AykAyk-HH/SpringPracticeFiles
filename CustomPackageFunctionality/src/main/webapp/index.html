@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Web Form</title>
+</head>
+<body>
+    <h1>Enter Data</h1>
+    <form id="dataForm">
+        String Value: <input type="text" id="stringValue"><br>
+        Integer Value: <input type="number" id="intValue"><br>
+        <button type="button" onclick="submitData()">Submit</button>
+    </form>
+    <script>
+        function submitData() {
+            var stringValue = document.getElementById('stringValue').value;
+            var intValue = document.getElementById('intValue').value;
+            var data = {
+                stringValue: stringValue,
+                intValue: intValue
+            };
+            fetch('http://localhost:8091/api/data', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('Data sent successfully:', data);
+            })
+            .catch(error => {
+                console.error('Error sending data:', error);
+            });
+        }
+    </script>
+</body>
+</html>
